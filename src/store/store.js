@@ -1,12 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit"
 import customerReducer from "../slices/customerSlice"
-import depositReducer from "../slices/depositSlice"
-import emiReducer from "../slices/emiSlice"
-
+//LINK - Entire store handler has been declared on behalf of the 
 export const store = configureStore({
     reducer: {
         customer:customerReducer,
-        deposit:depositReducer,
-        emi:emiReducer,
     }
 });

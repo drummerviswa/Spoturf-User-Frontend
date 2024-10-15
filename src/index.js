@@ -8,6 +8,7 @@ import {
   Outlet,
   RouterProvider,
 } from "react-router-dom";
+//REVIEW - Guys review on this import on react-toastify
 import { ToastContainer } from "react-toastify";
 import { AuthContext, AuthContextProvider } from "./context/authContext";
 import { Provider } from "react-redux";

@@ -9,7 +9,7 @@ export const AuthContextProvider = ({ children }) => {
   );
   const login = async(inputs) => {
     try {
-      const res = await axios.post("", inputs,{
+      const res = await axios.post("http://localhost:8800/api/auth/login", inputs,{
         withCredentials:true
       });
       setCurrentUser(res.data);
@@ -20,7 +20,7 @@ export const AuthContextProvider = ({ children }) => {
   };
   const logout = async () => {
     try {
-      await axios.post("", {});
+      await axios.post("http://localhost:8800/api/auth/logout", {});
       setCurrentUser(null);
       localStorage.removeItem("user");
     } catch (err) {
