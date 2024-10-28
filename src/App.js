@@ -1,10 +1,12 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/home/Home";
+import ScrollToTop from "./util/Scroll";
 
 function App() {
   return (
     <div className="App">
-      <Home />
+      <ScrollToTop />
+      <Outlet />
     </div>
   );
 }

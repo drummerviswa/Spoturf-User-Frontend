@@ -13,12 +13,18 @@ import { ToastContainer } from "react-toastify";
 import { AuthContext, AuthContextProvider } from "./context/authContext";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import Home from "./pages/home/Home";
+import Preference from "./pages/Preference";
+import Carousel from "./components/Carousel";
+import ListingPage from "./pages/listing/ListingPage";
+import TurfDetails from "./pages/listing/TurfDetails";
+import BookinPage from "./pages/booking/BookinPage";
 
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
-  if (!currentUser) {
-    return <Navigate to="/login" />;
-  }
+  // if (!currentUser) {
+  //   return <Navigate to="/login" />;
+  // }
   return children;
 };
 const router = createBrowserRouter([
@@ -34,6 +40,34 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <App />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+            children: [
+              {
+                path: "/",
+                element: <Carousel />,
+              },
+              {
+                path: "/listing",
+                element: <ListingPage />,
+              },
+              {
+                path: "/listing/:id",
+                element: <TurfDetails />,
+              },
+              {
+                path: "/booking",
+                element: <BookinPage />,
+              },
+            ],
+          },
+          {
+            path: "preference",
+            element: <Preference />,
+          },
+        ],
       },
     ],
   },
