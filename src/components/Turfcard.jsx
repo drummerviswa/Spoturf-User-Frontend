@@ -1,24 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Turfcard({ img, title, price, location }) {
+export default function Turfcard({ tid, img, title, price, location, rating }) {
   return (
-    <Link to={`/listing/${title}`} className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-      <div class="h-36 w-full">
+    <Link
+      to={`/listing/${tid}`}
+      className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+    >
+      <div className="h-36 w-full">
         <button>
           <img
-            class="mx-auto rounded-md w-full h-full dark:hidden"
+            className="mx-auto rounded-md w-full h-full dark:hidden"
             src={img}
             alt=""
           />
         </button>
       </div>
-      <div class="pt-4 bg-opacity-35 bg-gray-50">
+      <div className="pt-4 bg-opacity-35 bg-gray-50">
         <div className="flex flex-row justify-between items-center">
-          <button class="text-lg font-semibold leading-tight text-start text-gray-900 dark:text-white">
+          <button className="text-lg font-semibold leading-tight text-start text-gray-900 dark:text-white">
             {title}
           </button>
-          <p class=" leading-tight text-gray-900 dark:text-white flex flex-row">
+          <p className=" leading-tight text-gray-900 dark:text-white flex flex-row">
             ₹{price}/
             <svg
               width={18}
@@ -31,14 +34,14 @@ export default function Turfcard({ img, title, price, location }) {
           </p>
         </div>
 
-        <div class="mt-2 flex items-center gap-2">
-          <p class="text-sm font-medium text-gray-900 dark:text-white">
-            ⭐ 4.9
+        <div className="mt-2 flex items-center gap-2">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">
+            ⭐ {rating}
           </p>
         </div>
 
-        <ul class="mt-2 flex justify-between items-center gap-4">
-          <li class="flex items-center gap-2">
+        <ul className="mt-2 flex justify-between items-center gap-4">
+          <li className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={15}
@@ -50,14 +53,14 @@ export default function Turfcard({ img, title, price, location }) {
                 d="M6 .5A4.5 4.5 0 0 1 10.5 5c0 1.863-1.42 3.815-4.2 5.9a.5.5 0 0 1-.6 0C2.92 8.815 1.5 6.863 1.5 5A4.5 4.5 0 0 1 6 .5m0 1A3.5 3.5 0 0 0 2.5 5c0 1.355 1.059 2.918 3.224 4.653L6 9.871l.276-.218C8.441 7.918 9.5 6.355 9.5 5A3.5 3.5 0 0 0 6 1.5M6 4a1 1 0 1 1 0 2a1 1 0 0 1 0-2"
               ></path>
             </svg>
-            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
               {location}
             </p>
           </li>
-          <div class="flex items-center justify-end gap-4">
+          <div className="flex items-center justify-end gap-4">
             <Link
-              to={`/listing/${title}`}
-              class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-ternary focus:outline-none focus:ring-4  focus:ring-primary dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary"
+              to={`/listing/${tid}`}
+              className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white hover:bg-ternary focus:outline-none focus:ring-4  focus:ring-primary dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary"
             >
               Book
             </Link>

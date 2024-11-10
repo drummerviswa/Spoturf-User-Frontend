@@ -59,7 +59,7 @@ function LocationComponent() {
 
   return (
     <div>
-      <h3 className="flex flex-row">
+      <h3 className="flex flex-row lg:text-lg text-xs">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={30}

@@ -1,11 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import {
   toggleGamePreference,
   toggleTimeSlot,
   setSelectedDate,
-} from "../slice/filterSlice.js";
+} from "../slice/bookingSlice";
 
 // Import images for games
 import Cricket_Batsman from "../images/Cricket_Batsman.png";
@@ -13,6 +13,7 @@ import Shuttle_Player from "../images/shuttle.png";
 import Football_Player from "../images/Football_Player.png";
 import Basketball_Player from "../images/Basketball_Player.png";
 
+// Game data array for easy mapping
 const gameData = [
   { name: "Cricket", imgSrc: Cricket_Batsman, color: "bg-blue-500" },
   { name: "Shuttle", imgSrc: Shuttle_Player, color: "bg-red-500" },
@@ -20,27 +21,22 @@ const gameData = [
   { name: "Basketball", imgSrc: Basketball_Player, color: "bg-orange-500" },
 ];
 
-const timeSlots = [
-  "9am-10am",
-  "10am-11am",
-  "11am-12pm",
-  "12pm-1pm",
-  "1pm-2pm",
-  "2pm-3pm",
-];
-
-export default function Booking() {
+export default function BookingSection({
+  startTime,
+  endTime,
+  gamesAvailable,
+  blockedSlots,
+}) {
   const dispatch = useDispatch();
   const { games, selectedTimeSlots, selectedDate } = useSelector(
-    (state) => state.filter
+    (state) => state.booking
   );
-
   const dateContainerRef = useRef(null);
 
   // Initialize dates array with the next 10 days
   const dates = Array.from({ length: 10 }, (_, index) => ({
-    date: moment().add(index, "days").format("MMM Do"),
-    selected: selectedDate === moment().add(index, "days").format("MMM Do"),
+    date: moment().add(index, "days").format("LLLL"),
+    selected: selectedDate === moment().add(index, "days").format("LLLL"),
   }));
 
   const handleDateClick = (date) => {
@@ -54,24 +50,6 @@ export default function Booking() {
   const handlePreference = (game) => {
     dispatch(toggleGamePreference(game));
   };
-  const availableTimeSlots = [];
-  const start = moment("09:00:00", "HH:mm:ss");
-  const tempstart = moment("09:00:00", "HH:mm:ss");
-  const end = moment("23:00:00", "HH:mm:ss");
-  while (start.isBefore(end)) {
-    availableTimeSlots.push(
-      `${start.format("hA").toLowerCase()} - ${tempstart
-        .add(1, "hour")
-        .format("hA")
-        .toLowerCase()}`
-    );
-    start.add(1, "hour");
-    tempstart.add(1, "hour");
-  }
-  const timeSlotRows = [];
-  for (let i = 0; i < availableTimeSlots.length; i += 8) {
-    timeSlotRows.push(availableTimeSlots.slice(i, i + 8));
-  }
 
   // Scroll functionality for dates
   const scrollLeft = () => {
@@ -86,6 +64,33 @@ export default function Booking() {
     }
   };
 
+  // Generate available time slots between startTime and endTime
+  const availableTimeSlots = [];
+  const start = moment(startTime, "HH:mm:ss");
+  const tempstart = moment(startTime, "HH:mm:ss");
+  const end = moment(endTime, "HH:mm:ss");
+  while (start.isBefore(end)) {
+    availableTimeSlots.push(
+      `${start.format("hA").toLowerCase()} - ${tempstart
+        .add(1, "hour")
+        .format("hA")
+        .toLowerCase()}`
+    );
+    start.add(1, "hour");
+    tempstart.add(1, "hour");
+  }
+
+  // Organize time slots into rows of 3
+  const timeSlotRows = [];
+  for (let i = 0; i < availableTimeSlots.length; i += 3) {
+    timeSlotRows.push(availableTimeSlots.slice(i, i + 3));
+  }
+
+  // Filter selected games based on gamesAvailable
+  const selectedGames = gameData.filter((g) => {
+    return gamesAvailable.includes(g.name);
+  });
+
   return (
     <div className="w-full bg-gray-50/10 flex flex-col p-4 md:p-6 rounded-lg shadow-lg space-y-6">
       {/* Game Preference Section */}
@@ -93,7 +98,7 @@ export default function Booking() {
         Game Preference:
       </h3>
       <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
-        {gameData.map((game) => (
+        {selectedGames.map((game) => (
           <li
             key={game.name}
             className="flex flex-col items-center justify-center"
@@ -104,6 +109,7 @@ export default function Booking() {
               className="hidden peer"
               checked={games.includes(game.name)}
               onChange={() => handlePreference(game.name)}
+              aria-label={`Select ${game.name} game`} // Accessibility label
             />
             <label
               htmlFor={game.name}
@@ -131,6 +137,7 @@ export default function Booking() {
       <div className="flex items-center space-x-2 md:space-x-4">
         <button
           onClick={scrollLeft}
+          aria-label="Scroll left"
           className="p-2 bg-gray-300 text-gray-600 rounded-full hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-400"
         >
           ◀
@@ -142,21 +149,25 @@ export default function Booking() {
           {dates.map((dateObj, index) => (
             <button
               key={index}
-              onClick={() => handleDateClick(dateObj.date)}
+              onClick={() =>
+                handleDateClick(moment(dateObj.date).format("LLLL"))
+              }
               className={`min-w-[60px] p-2 rounded-lg text-center transition-colors duration-200 ${
                 dateObj.selected
                   ? "bg-primary text-white"
                   : "bg-gray-200 text-gray-700"
               } hover:bg-primary/50 focus:bg-primary/80 hover:text-white`}
+              aria-label={`Select date ${moment(dateObj.date).format("MMM Do")}`} // Accessibility label
             >
               <span className="text-sm md:text-base font-medium">
-                {dateObj.date}
+                {moment(dateObj.date).format("MMM Do")}
               </span>
             </button>
           ))}
         </div>
         <button
           onClick={scrollRight}
+          aria-label="Scroll right"
           className="p-2 bg-gray-300 text-gray-600 rounded-full hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-400"
         >
           ▶
@@ -182,8 +193,11 @@ export default function Booking() {
                     ? "bg-primary text-white"
                     : "bg-gray-200 text-gray-700"
                 } hover:bg-primary/80 focus:bg-primary/50 hover:text-white`}
+                aria-label={`Select time slot ${slot}`} // Accessibility label
               >
-                <span className="text-xs whitespace-nowrap sm:text-xs font-medium">{slot}</span>
+                <span className="text- whitespace-nowrap md:text-xs font-medium">
+                  {slot}
+                </span>
               </div>
             ))}
           </div>
