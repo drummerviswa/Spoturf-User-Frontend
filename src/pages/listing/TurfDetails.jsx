@@ -15,7 +15,7 @@ export default function TurfDetails() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { userData,isAuthenticated } = useContext(AuthContext);
+  const { userData, isAuthenticated } = useContext(AuthContext);
   const { games, selectedTimeSlots, selectedDate } = useSelector(
     (state) => state.booking
   );
@@ -61,6 +61,7 @@ export default function TurfDetails() {
       console.log("Booking Submitted!");
     }
     if (isAuthenticated) {
+      console.log("!", userData);
       try {
         const response = await axios.post("http://localhost:8800/book/new", {
           CID: userData.CID,

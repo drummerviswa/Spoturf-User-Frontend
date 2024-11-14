@@ -1,11 +1,4 @@
 import React, { useState } from "react";
-import {
-  Radio,
-  Card,
-  ListItem,
-  ListItemPrefix,
-  Typography,
-} from "@material-tailwind/react";
 
 export default function TeamMembers({
   isModalOpen,
@@ -30,57 +23,51 @@ export default function TeamMembers({
           role="dialog"
           aria-modal="true"
           aria-labelledby="team-members-title"
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 z-50 flex items-center justify-center no-scrollbar"
         >
           <div className="fixed inset-0 bg-black opacity-50"></div>
-          <div className="relative w-full max-w-5xl max-h-full bg-white rounded-lg shadow dark:bg-gray-700 p-6">
-            <Typography
-              id="team-members-title"
-              variant="h4"
-              className="mb-4 text-center"
-            >
+          <div className="relative w-full max-w-5xl max-h-full bg-white rounded-lg shadow-lg p-6">
+            <h4 id="team-members-title" className="mb-4 text-center text-2xl font-semibold">
               Team Members
-            </Typography>
-            <Card className="w-full max-w-full">
-              <div className="flex overflow-x-auto no-scrollbar p-2 space-x-4">
-                {teamMembers.map((item) => (
-                  <ListItem
-                    key={item}
-                    className="flex-none w-16 justify-center items-center"
-                  >
-                    <label
-                      htmlFor={`horizontal-list-${item}`}
-                      className="flex flex-col items-center cursor-pointer"
+            </h4>
+            <div className="overflow-x-auto p-2 space-x-4 flex no-scrollbar">
+              {teamMembers.map((item) => (
+                <div
+                  key={item}
+                  className="flex-none w-16 justify-center items-center cursor-pointer no-scrollbar"
+                >
+                  <label htmlFor={`horizontal-list-${item}`} className="flex flex-col items-center">
+                    <input
+                      type="radio"
+                      name="horizontal-list"
+                      id={`horizontal-list-${item}`}
+                      checked={selectedMember === item}
+                      onChange={() => handleSelectMember(item)}
+                      className="hidden"
+                    />
+                    <div
+                      className={`w-10 h-10 rounded-full border-2 border-gray-300 flex justify-center items-center mb-2 ${
+                        selectedMember === item ? "bg-primary" : "bg-gray-100"
+                      }`}
                     >
-                      <ListItemPrefix className="flex justify-center items-center flex-col">
-                        <Radio
-                          name="horizontal-list"
-                          id={`horizontal-list-${item}`}
-                          checked={selectedMember === item}
-                          onChange={() => handleSelectMember(item)}
-                          ripple={false}
-                          className="hover:before:opacity-0 focus:ring-primary"
-                          containerProps={{
-                            className: "p-0",
-                          }}
-                        />
-                        <Typography
-                          color="blue-gray"
-                          className="font-medium text-md text-blue-gray-400 mt-2"
-                        >
-                          {item}
-                        </Typography>
-                      </ListItemPrefix>
-                    </label>
-                  </ListItem>
-                ))}
-              </div>
-            </Card>
-            <div className="flex items-center justify-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+                      <span
+                        className={`text-xl text-white ${
+                          selectedMember === item ? "font-bold" : ""
+                        }`}
+                      >
+                        {item}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-500">{`${item}`}</p>
+                  </label>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-center p-4 border-t border-gray-200 rounded-b">
               <button
                 onClick={closeModal}
                 type="button"
-                className="text-white bg-primary/80 hover:bg-primary/90 focus:ring-4 focus:outline-none focus:ring-primary/20 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary focus:outline-none focus:ring-2 focus:ring-darkTheme"
               >
                 Choose
               </button>

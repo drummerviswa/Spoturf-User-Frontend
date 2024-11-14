@@ -4,8 +4,8 @@ import axios from "axios";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null); // Changed from [] to null if it's an object
+  const [user, setUser] = useState(null); // Store access token
+  const [userData, setUserData] = useState(null); // Store user details object
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // To store error messages
@@ -14,14 +14,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Parse the stored user data
+      setUser(storedUser);
       setIsAuthenticated(true);
     }
-    setLoading(false); // No need for loading as a dependency
+    setLoading(false); // Initial loading is complete
   }, []);
+
+  // Clear error message function
+  const clearError = () => setErrorMessage("");
 
   // Registration function to send OTP
   const register = async (mobileNo) => {
+    clearError();
     try {
       const response = await axios.post(
         "http://localhost:8800/customer/auth/register",
@@ -37,14 +41,16 @@ export const AuthProvider = ({ children }) => {
 
   // Function to verify OTP and complete registration
   const verifyRegisterOtp = async (userData) => {
+    clearError();
     try {
       const response = await axios.post(
         "http://localhost:8800/customer/auth/verify-register-otp",
         userData
       );
-      setUser(response.data); // Set user data on successful registration
+      setUser(response.data.accessToken); // Set token
+      setUserData(response.data.details); // Set user details
       setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(response.data)); // Store as string
+      localStorage.setItem("user", response.data.accessToken); // Store token
       return response.data;
     } catch (error) {
       console.error("OTP verification failed:", error);
@@ -55,6 +61,7 @@ export const AuthProvider = ({ children }) => {
 
   // Login function to send OTP
   const login = async (mobileNumber) => {
+    clearError();
     try {
       const response = await axios.post(
         "http://localhost:8800/customer/auth/login",
@@ -70,16 +77,16 @@ export const AuthProvider = ({ children }) => {
 
   // Function to verify OTP and complete login
   const verifyOtp = async (mobileNo, otp) => {
+    clearError();
     try {
       const response = await axios.post(
         "http://localhost:8800/customer/auth/verify-login-otp",
         { mobileNo, otp }
       );
-      console.log("Login success");
-      setUser(response.data.accessToken);
-      setUserData(response.data.details); // Store user details
+      setUser(response.data.accessToken); // Set token
+      setUserData(response.data.details); // Set user details
       setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(response.data.accessToken)); // Store token
+      localStorage.setItem("user", response.data.accessToken); // Store token
       return response.data.accessToken;
     } catch (error) {
       console.error("OTP verification failed:", error);
@@ -108,7 +115,8 @@ export const AuthProvider = ({ children }) => {
         userData,
         isAuthenticated,
         loading,
-        errorMessage, // Added to pass error message to the components
+        errorMessage,
+        clearError, // Clear error for components to use
       }}
     >
       {loading ? <div>Loading...</div> : children}

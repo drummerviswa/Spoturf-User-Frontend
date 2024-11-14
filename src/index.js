@@ -27,14 +27,13 @@ import Success from "./pages/Success";
 import PageTitle from "./components/PageTitle";
 import Profile from "./pages/Profile";
 import BookingHistory from "./pages/BookingHistory";
-
 const ProtectedRoute = ({ children }) => {
-  const { user, userData, loading, logout } = useContext(AuthContext);
+  const { isAuthenticated, loading, logout } = useContext(AuthContext);
 
   if (loading) {
     return <div>Loading...</div>;
   }
-  return userData ? (
+  return isAuthenticated ? (
     children
   ) : (
     <Navigate to="/login" state={{ from: window.location.pathname }} />
@@ -94,7 +93,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "history",
+            path: "booking-history",
             element: (
               <>
                 <PageTitle title="History | Turf Details " />
@@ -200,10 +199,10 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <AuthProvider>
+  <AuthProvider>
+    <Provider store={store}>
       <RouterProvider router={router} />
       <ToastContainer />
-    </AuthProvider>
-  </Provider>
+    </Provider>
+  </AuthProvider>
 );
