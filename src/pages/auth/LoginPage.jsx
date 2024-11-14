@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import OTPInput from "./OTPInput";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const { login, verifyOtp } = useContext(AuthContext);
@@ -40,6 +41,16 @@ const LoginPage = () => {
       }
     } catch (error) {
       setErrorMessage("OTP verification failed. Please try again.");
+      toast.error('OTP verification failed. Please try again.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
       console.error("OTP verification failed:", error);
     }
   };

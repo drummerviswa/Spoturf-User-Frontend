@@ -97,7 +97,7 @@ function NavBar() {
             </Link>
             <Link
               to="/preference"
-              className="text-white bg-primary hover:bg-primary focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-3xl text-sm px-2 lg:px-5 py-2 lg:py-3"
+              className="text-white whitespace-nowrap bg-primary hover:bg-primary focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-3xl text-sm px-2 lg:px-5 py-2 lg:py-3"
             >
               Book your Turf
             </Link>

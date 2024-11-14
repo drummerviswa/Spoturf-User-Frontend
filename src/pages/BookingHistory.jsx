@@ -72,6 +72,7 @@ export default function BookingDetails() {
                   time={booking.slot}
                   date={booking.date}
                   setChanges={handleChanges} // Trigger state change
+                  turfName={booking.turfName}
                 />
               ))}
           </div>
@@ -95,6 +96,8 @@ export default function BookingDetails() {
                   time={booking.slot}
                   date={booking.date}
                   setChanges={handleChanges} // Trigger state change
+                  turfName={booking.turfName}
+
                 />
               ))}
           </div>

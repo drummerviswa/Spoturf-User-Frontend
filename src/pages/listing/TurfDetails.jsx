@@ -6,6 +6,8 @@ import moment from "moment";
 import BookingSection from "../../components/BookingSection";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookingDetails } from "../../slice/bookingSlice";
+import { toast } from "react-toastify";
+import Breadcrumb from "../../components/Breadcrumb";
 
 export default function TurfDetails() {
   const dispatch = useDispatch();
@@ -51,37 +53,66 @@ export default function TurfDetails() {
   const handleBooking = async () => {
     if (!games.length) {
       setErrorMessage("Please select at least one game.");
+      toast.error("Select at least one game!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else if (!selectedDate) {
       setErrorMessage("Please select a date.");
+      toast.error("Select a date!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else if (selectedTimeSlots.length === 0) {
       setErrorMessage("Please select at least one time slot.");
+      toast.error("Select at least one time slot!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       setErrorMessage(null);
-      // Proceed with form submission or further logic
       console.log("Booking Submitted!");
-    }
-    if (isAuthenticated) {
-      console.log("!", userData);
-      try {
-        const response = await axios.post("http://localhost:8800/book/new", {
-          CID: userData.CID,
-          TID: turfData.TID,
-          date: moment(selectedDate).format(),
-          slots: selectedTimeSlots,
-          gamePreference: games,
+      if (isAuthenticated) {
+        console.log("User data:", userData);
+        try {
+          const response = await axios.post("http://localhost:8800/book/new", {
+            CID: userData.CID,
+            TID: turfData.TID,
+            date: moment(selectedDate).format(),
+            slots: selectedTimeSlots,
+            gamePreference: games,
+          });
+          dispatch(setBookingDetails(response.data));
+          navigate(`/booking/${response.data.BID}`);
+        } catch (error) {
+          console.error("Error booking turf:", error);
+        }
+      } else {
+        navigate("/login", {
+          state: {
+            from: `/listing/${turfData.TID}`,
+          },
         });
-        dispatch(setBookingDetails(response.data));
-        navigate(`/booking/${response.data.BID}`);
-      } catch (error) {
-        console.error("Error booking turf:", error);
+        console.log(window.location.pathname);
       }
-    } else {
-      navigate("/login", {
-        state: {
-          from: `/listing/${turfData.TID}`,
-        },
-      });
-      console.log(window.location.pathname);
     }
   };
 
@@ -90,25 +121,7 @@ export default function TurfDetails() {
       {/* Turf Detail Layout */}
       <div className="pt-2 flex flex-col">
         <nav aria-label="Breadcrumb">
-          <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-            <li className="text-2xl font-black underline ">
-              <p
-                aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600"
-              >
-                Turfs
-              </p>
-            </li>
-            {" / "}
-            <li className="text-xl font-bold font-Mulish">
-              <p
-                aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600"
-              >
-                {turfData.turfName}
-              </p>
-            </li>
-          </ol>
+          <Breadcrumb turfName={turfData.turfName} />
         </nav>
 
         {/* Carousel and Booking Section */}
@@ -173,9 +186,18 @@ export default function TurfDetails() {
                 {/* Amenities list with optional chaining */}
                 {turfData.amenities?.map((amenity, index) => (
                   <li key={index} className="flex items-center">
-                    <svg className="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0">
-                      <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                    <svg
+                      class="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
                     </svg>
+
                     {amenity}
                   </li>
                 ))}

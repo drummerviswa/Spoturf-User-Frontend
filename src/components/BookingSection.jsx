@@ -182,13 +182,13 @@ export default function BookingSection({
         {timeSlotRows.map((row, rowIndex) => (
           <div
             key={rowIndex}
-            className="flex flex-wrap justify-between space-x-2 md:space-x-4"
+            className="flex flex-wrap justify-between space-x-2 md:space-x-4 no-scrollbar"
           >
             {row.map((slot) => (
               <div
                 key={slot}
                 onClick={() => handleTimeSlotClick(slot)}
-                className={`p-2 flex-1 text-center rounded-lg cursor-pointer transition-colors duration-200 ${
+                className={`p-2 no-scrollbar m-0.5 flex-1 text-center rounded-lg cursor-pointer transition-colors duration-200 ${
                   selectedTimeSlots.includes(slot)
                     ? "bg-primary text-white"
                     : "bg-gray-200 text-gray-700"

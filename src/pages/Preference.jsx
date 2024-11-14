@@ -34,7 +34,7 @@ function Preference() {
         <h1 className="text-primary text-lg lg:text-2xl font-semibold mt-0 lg:mt-9">
           Choose your Game Preference
         </h1>
-        <div className="flex flex-wrap ms-6 lg:ms-auto lg:my-4 text-white mt-20">
+        <div className="flex flex-wrap justify-center lg:justify-normal lg:ms-auto lg:my-4 text-white mt-20">
           {gameData.map((game) => (
             <button
               key={game.name}

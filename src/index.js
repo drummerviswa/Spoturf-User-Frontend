@@ -8,7 +8,6 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import Home from "./pages/home/Home";
 import Preference from "./pages/Preference";
@@ -27,6 +26,7 @@ import Success from "./pages/Success";
 import PageTitle from "./components/PageTitle";
 import Profile from "./pages/Profile";
 import BookingHistory from "./pages/BookingHistory";
+import "react-toastify/dist/ReactToastify.css";
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading, logout } = useContext(AuthContext);
 
@@ -202,7 +202,6 @@ createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <Provider store={store}>
       <RouterProvider router={router} />
-      <ToastContainer />
     </Provider>
   </AuthProvider>
 );
