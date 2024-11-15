@@ -20,7 +20,7 @@ export default function BookingDetails() {
     };
   
     fetchBookings();
-  }, [changes]);
+  }, [changes, userData.CID]);
 
   const handleChanges = () => {
     setChanges((prev) => !prev); // Toggle changes to trigger re-fetch

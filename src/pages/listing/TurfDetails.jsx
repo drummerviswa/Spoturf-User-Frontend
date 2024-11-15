@@ -14,7 +14,7 @@ export default function TurfDetails() {
   const { id } = useParams();
   const [turfData, setTurfData] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { userData, isAuthenticated } = useContext(AuthContext);
@@ -219,7 +219,7 @@ export default function TurfDetails() {
                     <div className="sm:flex gap-6">
                       <img
                         src="https://pagedone.io/asset/uploads/1704364459.png"
-                        alt="Robert image"
+                        alt={`${r.name}`}
                         className="w-32 h-32 rounded-full object-cover"
                       />
                       <div className="text">

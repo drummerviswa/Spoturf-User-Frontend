@@ -8,7 +8,7 @@ const LoginPage = () => {
   const { login, verifyOtp } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const { from } = location.state;
+  const { from } = location.state || "/";
   const [mobileNumber, setMobileNumber] = useState("");
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // For handling errors
@@ -41,7 +41,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       setErrorMessage("OTP verification failed. Please try again.");
-      toast.error('OTP verification failed. Please try again.', {
+      toast.error("OTP verification failed. Please try again.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -50,7 +50,7 @@ const LoginPage = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
       console.error("OTP verification failed:", error);
     }
   };
@@ -86,7 +86,9 @@ const LoginPage = () => {
           </svg>
         </button>
       </div>
-      <h1 class="mb-4 text-xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-primary">Spoturf Login</h1>
+      <h1 class="mb-4 text-xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-primary">
+        Spoturf Login
+      </h1>
       <div className="bg-white p-8 rounded-lg shadow-lg w-80">
         {errorMessage && (
           <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>

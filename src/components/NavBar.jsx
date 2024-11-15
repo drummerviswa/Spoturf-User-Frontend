@@ -1,16 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import spoturf from "../images/spoturf.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
+import DefaultProfile from "../images/def_prof.png";
 
 function NavBar() {
-  const { isAuthenticated, logout, user } = useContext(AuthContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { isAuthenticated, logout, userData } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
   };
 
+  const handleDropdownToggle = () => {
+    setDropdownOpen((prevState) => !prevState);
+  };
+
+  const handleItemClick = () => {
+    setDropdownOpen(false); // Close dropdown when an item is clicked
+  };
   return (
     <nav className="bg-white">
       <div className="max-w-screen flex md:flex-wrap items-center justify-between mx-auto px-5 py-3">
@@ -25,50 +34,6 @@ function NavBar() {
         {/* Conditional Rendering Based on Authentication */}
         {isAuthenticated ? (
           <div className="flex items-center md:order-2 space-x-5 md:space-x-8 rtl:space-x-reverse pr-5">
-            {/* Contact Us Link */}
-            <Link
-              to="/about"
-              className="lg:block hidden text-primary px-3 py-3 underline font-mono"
-            >
-              Contact Us
-            </Link>
-            <div className="dropdown dropdown-end px-5">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Profile"
-                    src={
-                      user?.profilePic ||
-                      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                    }
-                  />
-                </div>
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-1 w-52 p-2 shadow"
-              >
-                <li>
-                  <button onClick={() => navigate("/profile")}>Profile</button>
-                </li>
-                <li>
-                  <button onClick={() => navigate("/booking-history")}>
-                    Booking History
-                  </button>
-                </li>
-                <li className="text-red-500">
-                  <button onClick={handleLogout}>Logout</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        ) : (
-          // Buttons for Non-Authenticated Users
-          <div className="flex items-center space-x-5">
             {/* Notifications Icon */}
             <button className="btn btn-ghost btn-circle">
               <div className="indicator">
@@ -89,6 +54,75 @@ function NavBar() {
                 <span className="badge badge-xs badge-primary indicator-item"></span>
               </div>
             </button>
+            {/* Contact Us Link */}
+            <Link
+              to="/about"
+              className="lg:block hidden text-primary px-3 py-3 underline font-mono"
+            >
+              Contact Us
+            </Link>
+            <div className="dropdown dropdown-end flex gap-4 px-5">
+              <span className="hidden text-right lg:block">
+                <span className="block text-sm font-medium text-black dark:text-white">
+                  {userData.name}
+                </span>
+                <span className="block text-xs">{userData.mobileNo}</span>
+              </span>
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+                onClick={handleDropdownToggle} // Toggle dropdown on click
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Profile"
+                    src={userData?.profilePic || DefaultProfile}
+                  />
+                </div>
+              </div>
+              {dropdownOpen && (
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-12 w-52 p-2 shadow"
+                >
+                  <li>
+                    <button
+                      onClick={() => {
+                        navigate("/profile");
+                        handleItemClick();
+                      }}
+                    >
+                      Profile
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        navigate("/booking-history");
+                        handleItemClick();
+                      }}
+                    >
+                      Booking History
+                    </button>
+                  </li>
+                  <li className="text-red-500">
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        handleItemClick();
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
+        ) : (
+          // Buttons for Non-Authenticated Users
+          <div className="flex items-center space-x-5">
             <Link
               to="/about"
               className="lg:block hidden text-primary px-3 py-3 underline font-mono"

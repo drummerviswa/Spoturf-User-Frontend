@@ -10,13 +10,20 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // To store error messages
 
-  // Load user data from localStorage on initial load
+  // Load user data and token from localStorage on initial load
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("user"); // Access token
+    const storedUserData = localStorage.getItem("userData"); // User details
+
     if (storedUser) {
       setUser(storedUser);
       setIsAuthenticated(true);
     }
+
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData)); // Parse JSON string to object
+    }
+
     setLoading(false); // Initial loading is complete
   }, []);
 
@@ -50,7 +57,10 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.accessToken); // Set token
       setUserData(response.data.details); // Set user details
       setIsAuthenticated(true);
+
       localStorage.setItem("user", response.data.accessToken); // Store token
+      localStorage.setItem("userData", JSON.stringify(response.data.details)); // Store user details
+
       return response.data;
     } catch (error) {
       console.error("OTP verification failed:", error);
@@ -86,7 +96,10 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.accessToken); // Set token
       setUserData(response.data.details); // Set user details
       setIsAuthenticated(true);
+
       localStorage.setItem("user", response.data.accessToken); // Store token
+      localStorage.setItem("userData", JSON.stringify(response.data.details)); // Store user details
+
       return response.data.accessToken;
     } catch (error) {
       console.error("OTP verification failed:", error);
@@ -101,6 +114,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     setUserData(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("userData");
   };
 
   return (
@@ -113,6 +127,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         user,
         userData,
+        setUserData,
         isAuthenticated,
         loading,
         errorMessage,

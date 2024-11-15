@@ -18,8 +18,6 @@ import BookinPage from "./pages/booking/BookinPage";
 import About from "./pages/home/About";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
-import VerifyRegisterOTP from "./pages/auth/VerifyRegisterOTP";
-import VerifyLoginOTP from "./pages/auth/VerifyLoginOTP";
 import { AuthContext, AuthProvider } from "./context/authContext";
 import store from "./store";
 import Success from "./pages/Success";
@@ -28,7 +26,7 @@ import Profile from "./pages/Profile";
 import BookingHistory from "./pages/BookingHistory";
 import "react-toastify/dist/ReactToastify.css";
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading, logout } = useContext(AuthContext);
+  const { isAuthenticated, loading } = useContext(AuthContext);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -123,20 +121,21 @@ const router = createBrowserRouter([
               </>
             ),
           },
+
+          {
+            path: "/profile",
+            element: (
+              <>
+                <PageTitle title="Spoturf | Booking " />
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              </>
+            ),
+          },
         ],
       },
     ],
-  },
-  {
-    path: "/profile",
-    element: (
-      <>
-        <PageTitle title="Spoturf | Booking " />
-        <ProtectedRoute>
-          <Profile />
-        </ProtectedRoute>
-      </>
-    ),
   },
   {
     path: "preference",

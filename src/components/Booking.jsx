@@ -20,15 +20,6 @@ const gameData = [
   { name: "Basketball", imgSrc: Basketball_Player, color: "bg-orange-500" },
 ];
 
-const timeSlots = [
-  "9am-10am",
-  "10am-11am",
-  "11am-12pm",
-  "12pm-1pm",
-  "1pm-2pm",
-  "2pm-3pm",
-];
-
 export default function Booking() {
   const dispatch = useDispatch();
   const { games, selectedTimeSlots, selectedDate } = useSelector(
