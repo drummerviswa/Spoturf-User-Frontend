@@ -85,7 +85,7 @@ const Register = () => {
             <div className="flex items-center border border-gray-300 rounded-md focus-within:border-primary mb-4">
               <span className="px-2 text-gray-600">+91</span>
               <input
-                type="text"
+                type="tel"
                 value={mobileNo}
                 onChange={(e) =>
                   setMobileNo(e.target.value.replace(/\D/g, "").slice(0, 10))
@@ -93,6 +93,7 @@ const Register = () => {
                 placeholder="Mobile Number"
                 maxLength={10}
                 className="w-full p-3 focus:outline-none rounded-xl"
+                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
               />
             </div>
             <button
