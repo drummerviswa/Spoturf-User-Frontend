@@ -29,7 +29,7 @@ export default function BookinPage() {
   const handleCancelPayment = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8800/book/${bookingDetails.BID}`
+        `https://spoturf-backend.onrender.com//book/${bookingDetails.BID}`
       );
       dispatch(clearBookings());
       navigate(`/listing/${tid.TID}`);
@@ -44,7 +44,7 @@ export default function BookinPage() {
     });
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8800/payment`, {
+      const response = await axios.post(`https://spoturf-backend.onrender.com/payment`, {
         amount: total,
         currency: "INR",
         receipt: `receipt_${bookingDetails.BID}`,
