@@ -93,7 +93,7 @@ export default function TurfDetails() {
       if (isAuthenticated) {
         console.log("User data:", userData);
         try {
-          const response = await axios.post("https://spoturf-backend.onrender.com//book/new", {
+          const response = await axios.post("https://spoturf-backend.onrender.com/book/new", {
             CID: userData.CID,
             TID: turfData.TID,
             date: moment(selectedDate).format(),
