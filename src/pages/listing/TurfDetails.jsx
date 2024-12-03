@@ -25,7 +25,7 @@ export default function TurfDetails() {
   useEffect(() => {
     const fetchTurfData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8800/turfs/${id}`);
+        const response = await axios.get(`https://spoturf-backend.onrender.com/turfs/${id}`);
         setTurfData(response.data);
       } catch (error) {
         console.error("Error fetching turf data:", error);
