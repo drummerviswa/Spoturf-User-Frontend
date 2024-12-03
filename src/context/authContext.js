@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     clearError();
     try {
       const response = await axios.post(
-        "http://localhost:8800/customer/auth/register",
+        "https://spoturf-backend.onrender.com/customer/auth/register",
         { mobileNo }
       );
       return response.data; // Returns OTP sent message or response data
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     clearError();
     try {
       const response = await axios.post(
-        "http://localhost:8800/customer/auth/verify-register-otp",
+        "https://spoturf-backend.onrender.com/customer/auth/verify-register-otp",
         userData
       );
       setUser(response.data.accessToken); // Set token
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     clearError();
     try {
       const response = await axios.post(
-        "http://localhost:8800/customer/auth/login",
+        "https://spoturf-backend.onrender.com/customer/auth/login",
         { mobileNo: mobileNumber }
       );
       return response.data;
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
     clearError();
     try {
       const response = await axios.post(
-        "http://localhost:8800/customer/auth/verify-login-otp",
+        "https://spoturf-backend.onrender.com/customer/auth/verify-login-otp",
         { mobileNo, otp }
       );
       setUser(response.data.accessToken); // Set token
