@@ -29,7 +29,7 @@ export default function BookinPage() {
   const handleCancelPayment = async () => {
     try {
       const response = await axios.delete(
-        `https://spoturf-backend.onrender.com//book/${bookingDetails.BID}`
+        `https://spoturf-backend.onrender.com/book/${bookingDetails.BID}`
       );
       dispatch(clearBookings());
       navigate(`/listing/${tid.TID}`);
