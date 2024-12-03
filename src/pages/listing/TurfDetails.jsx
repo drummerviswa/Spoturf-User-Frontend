@@ -35,7 +35,7 @@ export default function TurfDetails() {
     };
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8800/reviews/${id}`);
+        const response = await axios.get(`https://spoturf-backend.onrender.com/reviews/${id}`);
         setReviews(response.data);
       } catch (error) {
         console.error("Error fetching review:", error);
@@ -93,7 +93,7 @@ export default function TurfDetails() {
       if (isAuthenticated) {
         console.log("User data:", userData);
         try {
-          const response = await axios.post("http://localhost:8800/book/new", {
+          const response = await axios.post("https://spoturf-backend.onrender.com//book/new", {
             CID: userData.CID,
             TID: turfData.TID,
             date: moment(selectedDate).format(),
