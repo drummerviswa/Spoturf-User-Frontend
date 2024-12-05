@@ -108,7 +108,6 @@ const LoginPage = () => {
                 placeholder="Mobile Number"
                 maxLength={10}
                 className="w-full p-3 focus:outline-none rounded-xl"
-                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
               />
             </div>
             <button
